@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Style interne -->
     <link rel="stylesheet" href="assets/css/styles.css">
-    
+
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
@@ -29,31 +29,30 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <label for="artistSelect" class="sr-only">Choisir un artiste</label>
                     <div class="relative">
-                        <select id="artistSelect" onchange="switchArtist(this.value)"
+                        <select id="artistSelect"
                             class="appearance-none bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-base sm:text-lg tracking-tight pl-3 pr-8 py-1 rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer transition shadow-sm">
-                            <option value="pdss">Paul de Saint Sernin</option>
-                            <option value="guihome">GuiHome vous détend</option>
+                            <option value="" selected disabled>Chargement...</option>
                         </select>
                         <i class="fa-solid fa-chevron-down text-amber-400 text-xs absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
                     <span class="text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">France, Benelux & Suisse</span>
                 </div>
-                <p id="artistSubtitle" class="text-xs text-slate-400 mt-0.5">Carte des lieux et dates du spectacle en France, Belgique, Luxembourg & Suisse (2026 – 2027)</p>
+                <p id="artistSubtitle" class="text-xs text-slate-400 mt-0.5"></p>
             </div>
         </div>
 
         <!-- Filtres et légende -->
         <div class="flex flex-wrap items-center gap-2 text-xs">
-            <button onclick="filterDates('all')" id="btn-all" class="filter-btn active px-3 py-1.5 rounded-lg font-semibold bg-white text-slate-900 shadow transition cursor-pointer">
+            <button data-filter="all" id="btn-all" class="filter-btn active px-3 py-1.5 rounded-lg font-semibold bg-white text-slate-900 shadow transition cursor-pointer">
                 Toutes (<span id="count-all">0</span>)
             </button>
-            <button onclick="filterDates('dispo')" id="btn-dispo" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-blue-600/20 text-blue-300 border border-blue-500/40 hover:bg-blue-600/30 transition flex items-center gap-1.5 cursor-pointer">
+            <button data-filter="dispo" id="btn-dispo" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-blue-600/20 text-blue-300 border border-blue-500/40 hover:bg-blue-600/30 transition flex items-center gap-1.5 cursor-pointer">
                 <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Places dispo (<span id="count-dispo">0</span>)
             </button>
-            <button onclick="filterDates('dernieres')" id="btn-dernieres" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-amber-600/20 text-amber-300 border border-amber-500/40 hover:bg-amber-600/30 transition flex items-center gap-1.5 cursor-pointer">
+            <button data-filter="dernieres" id="btn-dernieres" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-amber-600/20 text-amber-300 border border-amber-500/40 hover:bg-amber-600/30 transition flex items-center gap-1.5 cursor-pointer">
                 <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Dernières places (<span id="count-dernieres">0</span>)
             </button>
-            <button onclick="filterDates('complet')" id="btn-complet" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-red-600/20 text-red-300 border border-red-500/40 hover:bg-red-600/30 transition flex items-center gap-1.5 cursor-pointer">
+            <button data-filter="complet" id="btn-complet" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-red-600/20 text-red-300 border border-red-500/40 hover:bg-red-600/30 transition flex items-center gap-1.5 cursor-pointer">
                 <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Complet (<span id="count-complet">0</span>)
             </button>
         </div>
@@ -68,17 +67,17 @@
             
             <!-- Boutons de zoom rapide (Vue d'ensemble / Benelux / Suisse / Île-de-France) -->
             <div class="absolute bottom-5 left-4 z-[1000] flex flex-wrap gap-2">
-                <button onclick="resetViewFrance()" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
+                <button data-view="france" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
                     <i class="fa-solid fa-map text-amber-400"></i> Vue d'ensemble
                 </button>
-                <button onclick="zoomBenelux()" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
+                <button data-view="benelux" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
                     <i class="fa-solid fa-flag text-emerald-400"></i> Zoom Benelux
                 </button>
-                <button onclick="zoomSuisse()" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
+                <button data-view="suisse" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
                     <i class="fa-solid fa-mountain text-rose-400"></i> Zoom Suisse
                 </button>
-                <button onclick="zoomParisIDF()" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
-                    <i class="fa-solid fa-magnifying-glass-plus text-blue-400"></i> Zoom Île-de-France (12 dates)
+                <button data-view="paris" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 shadow-lg backdrop-blur flex items-center gap-1.5 cursor-pointer transition">
+                    <i class="fa-solid fa-magnifying-glass-plus text-blue-400"></i> Zoom Île-de-France
                 </button>
             </div>
         </div>
@@ -94,34 +93,25 @@
                         </span>
                         <div class="flex items-center gap-2">
                             <span id="timeRangeLabel" class="font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                                Nov. 2026 – Mai 2027
                             </span>
-                            <button onclick="resetTimeRange()" id="resetTimeBtn" class="hidden text-[10px] text-slate-400 hover:text-white underline cursor-pointer" title="Réinitialiser la période">
+                            <button id="resetTimeBtn" class="hidden text-[10px] text-slate-400 hover:text-white underline cursor-pointer" title="Réinitialiser la période">
                                 Tout
                             </button>
                         </div>
                     </div>
                     <div class="dual-range-wrap">
                         <div class="dual-range-track"></div>
-                        <div id="rangeFill" class="dual-range-fill" style="left: 0%; width: 100%;"></div>
-                        <input type="range" id="rangeStart" min="0" max="6" value="0" step="1" oninput="handleTimeSlider('start')" class="dual-range-input">
-                        <input type="range" id="rangeEnd" min="0" max="6" value="6" step="1" oninput="handleTimeSlider('end')" class="dual-range-input">
+                        <div id="rangeFill" class="dual-range-fill" style="left: 0%; width: 0%;"></div>
+                        <input type="range" id="rangeStart" min="0" max="0" value="0" step="1" class="dual-range-input">
+                        <input type="range" id="rangeEnd" min="0" max="0" value="0" step="1" class="dual-range-input">
                     </div>
-                    <div id="sliderTicks" class="flex justify-between text-[9px] text-slate-400 font-medium px-0.5 -mt-0.5">
-                        <span>Nov 26</span>
-                        <span>Déc</span>
-                        <span>Jan 27</span>
-                        <span>Fév</span>
-                        <span>Mar</span>
-                        <span>Avr</span>
-                        <span>Mai 27</span>
-                    </div>
+                    <div id="sliderTicks" class="flex justify-between text-[9px] text-slate-400 font-medium px-0.5 -mt-0.5"></div>
                 </div>
 
                 <!-- Recherche textuelle -->
                 <div class="relative">
                     <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Rechercher une ville ou une salle (ex: Lyon, Olympia)..." 
+                    <input type="text" id="searchInput" placeholder="Rechercher une ville ou une salle..."
                         class="w-full bg-slate-800 text-white placeholder-slate-400 text-xs rounded-xl pl-8 pr-3 py-2 border border-slate-700 focus:outline-none focus:border-amber-400">
                 </div>
             </div>
@@ -131,8 +121,8 @@
             </div>
 
             <div class="p-2.5 bg-slate-950 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-                <span id="sourceText">Source : linktr.ee/desaintserninpaul</span>
-                <a id="sourceLink" href="https://linktr.ee/desaintserninpaul" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">
+                <span id="sourceText"></span>
+                <a id="sourceLink" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">
                     Billetterie officielle <i class="fa-solid fa-arrow-up-right-from-square ml-0.5"></i>
                 </a>
             </div>
@@ -140,467 +130,6 @@
 
     </main>
 
-    <script>
-        // Catalogue des artistes et de leurs dates de tournée
-        const artistsData = {
-            pdss: {
-                name: "Paul de Saint Sernin",
-                subtitle: "Carte des lieux et dates du spectacle en France, Belgique, Luxembourg & Suisse (2026 – 2027)",
-                sourceLabel: "Source : linktr.ee/desaintserninpaul",
-                sourceUrl: "https://linktr.ee/desaintserninpaul",
-                ctaLabel: "Voir sur Linktree",
-                monthLabels: [
-                    "Nov. 2026",
-                    "Déc. 2026",
-                    "Janv. 2027",
-                    "Févr. 2027",
-                    "Mars 2027",
-                    "Avr. 2027",
-                    "Mai 2027"
-                ],
-                tickLabels: ["Nov 26", "Déc", "Jan 27", "Fév", "Mar", "Avr", "Mai 27"],
-                dates: [
-                    { city: "Biarritz", monthIdx: 0, dateLabel: "26/11/26", fullDate: "Jeudi 26 nov. 2026", venue: "Gare du Midi", status: "dernieres", lat: 43.4832, lng: -1.5586 },
-                    { city: "Pertuis", monthIdx: 1, dateLabel: "04/12/26", fullDate: "Vendredi 4 déc. 2026", venue: "Théâtre de Pertuis", status: "complet", lat: 43.6942, lng: 5.5031 },
-                    { city: "Salon-de-Provence", monthIdx: 1, dateLabel: "05/12/26", fullDate: "Samedi 5 déc. 2026", venue: "Théâtre Municipal Armand", status: "dernieres", lat: 43.6406, lng: 5.0972 },
-                    { city: "Mérignac (Bordeaux)", monthIdx: 1, dateLabel: "10/12/26", fullDate: "Jeudi 10 déc. 2026", venue: "Le Pin Galant", status: "dernieres", lat: 44.8386, lng: -0.6436 },
-                    { city: "Cholet", monthIdx: 1, dateLabel: "11/12/26", fullDate: "Vendredi 11 déc. 2026", venue: "Théâtre Saint-Louis", status: "complet", lat: 47.0600, lng: -0.8783 },
-                    { city: "Paris (Madeleine)", monthIdx: 1, dateLabel: "Déc. 26", fullDate: "Jusqu'au 19 déc. 2026", venue: "Théâtre de la Madeleine", status: "complet", lat: 48.8698, lng: 2.3245 },
-                    { city: "Châtel-Guyon", monthIdx: 2, dateLabel: "14/01/27", fullDate: "Jeudi 14 janv. 2027", venue: "Théâtre de Châtel-Guyon", status: "complet", lat: 45.9225, lng: 3.0642 },
-                    { city: "Meaux", monthIdx: 2, dateLabel: "16/01/27", fullDate: "Samedi 16 janv. 2027", venue: "Théâtre Luxembourg", status: "complet", lat: 48.9603, lng: 2.8883 },
-                    { city: "Lyon", monthIdx: 2, dateLabel: "17/01/27", fullDate: "Dimanche 17 janv. 2027", venue: "Bourse du Travail", status: "dernieres", lat: 45.7601, lng: 4.8469 },
-                    { city: "Le Thor", monthIdx: 2, dateLabel: "21/01/27", fullDate: "Jeudi 21 janv. 2027", venue: "Auditorium de Vaucluse", status: "dernieres", lat: 43.9289, lng: 4.9942 },
-                    { city: "Marseille", monthIdx: 2, dateLabel: "23/01/27", fullDate: "Samedi 23 janv. 2027", venue: "Espace Julien", status: "complet", lat: 43.2935, lng: 5.3835 },
-                    { city: "Reims", monthIdx: 2, dateLabel: "26/01/27", fullDate: "Mardi 26 janv. 2027", venue: "Le K (Tinqueux)", status: "dispo", lat: 49.2583, lng: 4.0317 },
-                    { city: "Issy-les-Moulineaux", monthIdx: 2, dateLabel: "28/01/27", fullDate: "Jeudi 28 janv. 2027", venue: "Palais des Arts et des Congrès", status: "dernieres", lat: 48.8245, lng: 2.2743 },
-                    { city: "St-Symphorien-d'Ozon", monthIdx: 2, dateLabel: "29/01/27", fullDate: "Vendredi 29 janv. 2027", venue: "Espace Culturel Louise Labé", status: "complet", lat: 45.6328, lng: 4.8564 },
-                    { city: "Feurs", monthIdx: 2, dateLabel: "30/01/27", fullDate: "Samedi 30 janv. 2027", venue: "Théâtre du Forum", status: "dispo", lat: 45.7417, lng: 4.2256 },
-                    { city: "Val Cenis", monthIdx: 3, dateLabel: "02/02/27", fullDate: "Mardi 2 févr. 2027", venue: "Auditorium Laurent Gerra", status: "dispo", lat: 45.2869, lng: 6.9014 },
-                    { city: "Marcheprime", monthIdx: 3, dateLabel: "05/02/27", fullDate: "Vendredi 5 févr. 2027", venue: "La Caravelle", status: "dernieres", lat: 44.6917, lng: -0.8542 },
-                    { city: "Saint-Étienne", monthIdx: 3, dateLabel: "19/02/27", fullDate: "Vendredi 19 févr. 2027", venue: "Centre de Congrès", status: "dispo", lat: 45.4397, lng: 4.3872 },
-                    { city: "Morges 🇨🇭", monthIdx: 3, dateLabel: "20/02/27", fullDate: "Samedi 20 févr. 2027", venue: "Théâtre de Beausobre", status: "dispo", lat: 46.5113, lng: 6.4986 },
-                    { city: "Gagny", monthIdx: 3, dateLabel: "26/02/27", fullDate: "Vendredi 26 févr. 2027", venue: "Théâtre André Malraux", status: "dispo", lat: 48.8833, lng: 2.5333 },
-                    { city: "Rueil-Malmaison", monthIdx: 3, dateLabel: "27/02/27", fullDate: "Samedi 27 févr. 2027", venue: "Théâtre André Malraux", status: "dernieres", lat: 48.8769, lng: 2.1893 },
-                    { city: "Plaisir", monthIdx: 4, dateLabel: "05/03/27", fullDate: "Vendredi 5 mars 2027", venue: "Théâtre Coluche", status: "dernieres", lat: 48.8167, lng: 1.9500 },
-                    { city: "Genève 🇨🇭", monthIdx: 4, dateLabel: "13/03/27", fullDate: "Samedi 13 mars 2027", venue: "Bâtiment des Forces Motrices (BFM)", status: "dispo", lat: 46.2044, lng: 6.1369 },
-                    { city: "Les Gets", monthIdx: 4, dateLabel: "14/03/27", fullDate: "Dimanche 14 mars 2027", venue: "Salle de la Colombière", status: "dispo", lat: 46.1583, lng: 6.6694 },
-                    { city: "Bordeaux (Arena)", monthIdx: 4, dateLabel: "20/03/27", fullDate: "Samedi 20 mars 2027", venue: "Arkéa Arena (Nuit des Fous Rires)", status: "dispo", lat: 44.8211, lng: -0.5222 },
-                    { city: "Courbevoie", monthIdx: 4, dateLabel: "25/03/27", fullDate: "Jeudi 25 mars 2027", venue: "Centre Événementiel", status: "complet", lat: 48.8966, lng: 2.2567 },
-                    { city: "Le Poinçonnet", monthIdx: 4, dateLabel: "26/03/27", fullDate: "Vendredi 26 mars 2027", venue: "L'Asphodèle", status: "complet", lat: 46.7644, lng: 1.7192 },
-                    { city: "Saint-Quentin", monthIdx: 5, dateLabel: "04/04/27", fullDate: "Dimanche 4 avr. 2027", venue: "Le Splendid", status: "dispo", lat: 49.8489, lng: 3.2876 },
-                    { city: "Roubaix", monthIdx: 5, dateLabel: "06/04/27", fullDate: "Mardi 6 avr. 2027", venue: "Le Colisée", status: "dernieres", lat: 50.6927, lng: 3.1778 },
-                    { city: "Saint-Grégoire (Rennes)", monthIdx: 5, dateLabel: "07 & 08/04/27", fullDate: "7 avr. (Dispo) & 8 avr. 2027 (Complet)", venue: "L'EMC2", status: "dispo", lat: 48.1517, lng: -1.6861 },
-                    { city: "Cannes", monthIdx: 5, dateLabel: "10/04/27", fullDate: "Samedi 10 avr. 2027", venue: "Théâtre Croisette (JW Marriott)", status: "dispo", lat: 43.5503, lng: 7.0247 },
-                    { city: "Paris (L'Olympia)", monthIdx: 5, dateLabel: "12 & 13/04/27", fullDate: "Lundi 12 & Mardi 13 avr. 2027", venue: "L'Olympia", status: "dispo", lat: 48.8702, lng: 2.3284 },
-                    { city: "Laval", monthIdx: 5, dateLabel: "14 & 15/04/27", fullDate: "Mercredi 14 & Jeudi 15 avr. 2027", venue: "Théâtre de Laval", status: "dispo", lat: 48.0700, lng: -0.7700 },
-                    { city: "Hyères", monthIdx: 5, dateLabel: "17/04/27", fullDate: "Samedi 17 avr. 2027", venue: "Forum du Casino", status: "dispo", lat: 43.1204, lng: 6.1286 },
-                    { city: "Crosne", monthIdx: 5, dateLabel: "23/04/27", fullDate: "Vendredi 23 avr. 2027", venue: "Espace René Fallet", status: "dispo", lat: 48.7153, lng: 2.4631 },
-                    { city: "Saint-Maur-des-Fossés", monthIdx: 5, dateLabel: "24/04/27", fullDate: "Samedi 24 avr. 2027", venue: "Théâtre de Saint-Maur", status: "dernieres", lat: 48.7994, lng: 2.4936 },
-                    { city: "Vélizy-Villacoublay", monthIdx: 5, dateLabel: "27/04/27", fullDate: "Mardi 27 avr. 2027", venue: "L'Onde", status: "dispo", lat: 48.7817, lng: 2.1897 },
-                    { city: "Suresnes", monthIdx: 5, dateLabel: "29/04/27", fullDate: "Jeudi 29 avr. 2027", venue: "Théâtre Jean Vilar", status: "dispo", lat: 48.8711, lng: 2.2292 },
-                    { city: "Luxembourg 🇱🇺", monthIdx: 6, dateLabel: "02/05/27", fullDate: "Dimanche 2 mai 2027", venue: "Conservatoire de Luxembourg", status: "dispo", lat: 49.6012, lng: 6.1105 },
-                    { city: "Liège 🇧🇪", monthIdx: 6, dateLabel: "03/05/27", fullDate: "Lundi 3 mai 2027", venue: "Le Forum de Liège", status: "dispo", lat: 50.6412, lng: 5.5718 },
-                    { city: "Bruxelles 🇧🇪", monthIdx: 6, dateLabel: "04 & 05/05/27", fullDate: "Mardi 4 & Mercredi 5 mai 2027", venue: "Cirque Royal", status: "dispo", lat: 50.8489, lng: 4.3642 },
-                    { city: "Châteaurenard", monthIdx: 6, dateLabel: "14/05/27", fullDate: "Vendredi 14 mai 2027", venue: "Salle de l'Étoile", status: "dispo", lat: 43.8825, lng: 4.8553 },
-                    { city: "Sainte-Maxime", monthIdx: 6, dateLabel: "15/05/27", fullDate: "Samedi 15 mai 2027", venue: "Le Carré Léon Gaumont", status: "dispo", lat: 43.3089, lng: 6.6389 },
-                    { city: "Enghien-les-Bains", monthIdx: 6, dateLabel: "21/05/27", fullDate: "Vendredi 21 mai 2027", venue: "Théâtre du Casino Barrière", status: "dispo", lat: 48.9694, lng: 2.3078 },
-                    { city: "Yvetot", monthIdx: 6, dateLabel: "22/05/27", fullDate: "Samedi 22 mai 2027", venue: "Espace Culturel Les Vikings", status: "dispo", lat: 49.6167, lng: 0.7500 },
-                    { city: "Annecy", monthIdx: 6, dateLabel: "26/05/27", fullDate: "Mercredi 26 mai 2027", venue: "Arcadium", status: "dispo", lat: 45.9156, lng: 6.1131 },
-                    { city: "Aix-les-Bains", monthIdx: 6, dateLabel: "27/05/27", fullDate: "Jeudi 27 mai 2027", venue: "Centre Culturel et des Congrès", status: "dispo", lat: 45.6889, lng: 5.9153 },
-                    { city: "Villeurbanne", monthIdx: 6, dateLabel: "28/05/27", fullDate: "Vendredi 28 mai 2027", venue: "Le Transbordeur", status: "dispo", lat: 45.7836, lng: 4.8606 }
-                ]
-            },
-            guihome: {
-                name: "GuiHome vous détend",
-                subtitle: "Tournée « GuiHome vous détend LeGrand » en France et en Belgique (2026 – 2027)",
-                sourceLabel: "Source : guihome.be",
-                sourceUrl: "https://guihome.be/",
-                ctaLabel: "Réserver sur guihome.be",
-                monthLabels: [
-                    "Nov. 2026",
-                    "Déc. 2026",
-                    "Janv. 2027"
-                ],
-                tickLabels: ["Nov. 2026", "Déc. 2026", "Janv. 2027"],
-                dates: [
-                    { city: "Reims", monthIdx: 0, dateLabel: "25/11/26", fullDate: "Mercredi 25 nov. 2026", venue: "Le K (Tinqueux)", status: "dispo", lat: 49.2583, lng: 4.0317 },
-                    { city: "Laon", monthIdx: 0, dateLabel: "26/11/26", fullDate: "Jeudi 26 nov. 2026", venue: "Maison des Arts et des Loisirs", status: "dispo", lat: 49.5641, lng: 3.6244 },
-                    { city: "Colmar", monthIdx: 0, dateLabel: "28/11/26", fullDate: "Samedi 28 nov. 2026", venue: "Halle aux Vins - Parc Expo Colmar", status: "dispo", lat: 48.0972, lng: 7.3625 },
-                    { city: "Toulouse", monthIdx: 1, dateLabel: "01/12/26", fullDate: "Mardi 1 déc. 2026", venue: "Casino Barrière Toulouse", status: "dispo", lat: 43.5681, lng: 1.4286 },
-                    { city: "Bergerac", monthIdx: 1, dateLabel: "02/12/26", fullDate: "Mercredi 2 déc. 2026", venue: "Centre culturel Michel Manet", status: "dispo", lat: 44.8539, lng: 0.4833 },
-                    { city: "Bordeaux (Déc.)", monthIdx: 1, dateLabel: "03/12/26", fullDate: "Jeudi 3 déc. 2026", venue: "Théâtre Fémina", status: "dispo", lat: 44.8414, lng: -0.5761 },
-                    { city: "Les Sables-d'Olonne", monthIdx: 1, dateLabel: "04/12/26", fullDate: "Vendredi 4 déc. 2026", venue: "Centre des Congrès Les Atlantes", status: "dispo", lat: 46.4947, lng: -1.7853 },
-                    { city: "Lille", monthIdx: 1, dateLabel: "09 & 10/12/26", fullDate: "Mercredi 9 & Jeudi 10 déc. 2026", venue: "Théâtre Sébastopol", status: "dispo", lat: 50.6301, lng: 3.0592 },
-                    { city: "Metz", monthIdx: 1, dateLabel: "12/12/26", fullDate: "Samedi 12 déc. 2026", venue: "Metz Congrès Robert Schuman", status: "dispo", lat: 49.1086, lng: 6.1836 },
-                    { city: "Mons 🇧🇪", monthIdx: 1, dateLabel: "15 à 17/12/26", fullDate: "15, 16 & 17 déc. 2026 (3 soirs)", venue: "Théâtre Royal de Mons", status: "dispo", lat: 50.4542, lng: 3.9522 },
-                    { city: "La Louvière 🇧🇪", monthIdx: 1, dateLabel: "18/12/26", fullDate: "Vendredi 18 déc. 2026", venue: "Central", status: "dispo", lat: 50.4789, lng: 4.1878 },
-                    { city: "Namur 🇧🇪", monthIdx: 1, dateLabel: "21 à 23/12/26", fullDate: "21, 22 & 23 déc. 2026 (3 soirs)", venue: "Théâtre de Namur", status: "dispo", lat: 50.4649, lng: 4.8650 },
-                    { city: "Liège 🇧🇪", monthIdx: 2, dateLabel: "05/01/27", fullDate: "Mardi 5 janv. 2027 (report du 15/10)", venue: "Le Forum de Liège", status: "dispo", lat: 50.6412, lng: 5.5718 },
-                    { city: "Bordeaux (Janv.)", monthIdx: 2, dateLabel: "08 & 09/01/27", fullDate: "Vendredi 8 & Samedi 9 janv. 2027", venue: "Théâtre Fémina", status: "dispo", lat: 44.8414, lng: -0.5761 },
-                    { city: "Paris (L'Olympia)", monthIdx: 2, dateLabel: "18 à 20/01/27", fullDate: "18, 19 & 20 janv. 2027 (3 soirs - Final)", venue: "L'Olympia", status: "dispo", lat: 48.8702, lng: 2.3284 }
-                ]
-            }
-        };
-
-        let currentArtistKey = 'pdss';
-        let tourDates = artistsData[currentArtistKey].dates;
-        let monthLabels = artistsData[currentArtistKey].monthLabels;
-        let timeStartIdx = 0;
-        let timeEndIdx = monthLabels.length - 1;
-
-        // Initialisation de la carte centrée sur la France, le Benelux et la Suisse (sans tuiles externes)
-        const map = L.map('map', {
-            zoomControl: true,
-            minZoom: 5,
-            maxZoom: 13
-        }).setView([47.2, 2.8], 6);
-
-        // Sources GeoJSON haute résolution (Natural Earth 1:10m) pour les frontières précises
-        const NE_COUNTRIES_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson';
-        const NE_PROVINCES_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces_lines.geojson';
-
-        const neighborCodes = new Set(['ESP', 'PRT', 'ITA', 'DEU', 'GBR', 'IRL', 'AUT', 'LIE', 'MCO', 'AND']);
-        const focusCountryCodes = new Set(['BEL', 'NLD', 'LUX', 'CHE']);
-
-        // Chargement des pays haute résolution (frontières précises Benelux, Suisse & pays limitrophes)
-        fetch(NE_COUNTRIES_URL)
-            .then(res => res.ok ? res.json() : null)
-            .then(geojson => {
-                if (!geojson || !geojson.features) return;
-
-                // 1. Pays limitrophes en arrière-plan
-                const neighborFeatures = geojson.features.filter(f =>
-                    neighborCodes.has(f.properties.ADM0_A3) || neighborCodes.has(f.properties.ISO_A3)
-                );
-                if (neighborFeatures.length > 0) {
-                    L.geoJSON({ type: 'FeatureCollection', features: neighborFeatures }, {
-                        style: {
-                            color: '#cbd5e1',
-                            weight: 1.1,
-                            fillColor: '#f1f5f9',
-                            fillOpacity: 0.9
-                        },
-                        interactive: false
-                    }).addTo(map).bringToBack();
-                }
-
-                // 2. Benelux (Belgique, Pays-Bas, Luxembourg) et Suisse avec tracé précis des frontières
-                const focusFeatures = geojson.features.filter(f =>
-                    focusCountryCodes.has(f.properties.ADM0_A3) || focusCountryCodes.has(f.properties.ISO_A3)
-                );
-                if (focusFeatures.length > 0) {
-                    L.geoJSON({ type: 'FeatureCollection', features: focusFeatures }, {
-                        style: {
-                            color: '#475569',
-                            weight: 1.8,
-                            fillColor: '#ffffff',
-                            fillOpacity: 0.96
-                        },
-                        interactive: false
-                    }).addTo(map);
-                }
-            })
-            .catch(() => {});
-
-        // Ajout des subdivisions internes (cantons suisses, provinces belges/néerlandaises, districts luxembourgeois) en trait fin
-        fetch(NE_PROVINCES_URL)
-            .then(res => res.ok ? res.json() : null)
-            .then(geojson => {
-                if (!geojson || !geojson.features) return;
-                const subFeatures = geojson.features.filter(f => focusCountryCodes.has(f.properties.adm0_a3));
-                if (subFeatures.length > 0) {
-                    L.geoJSON({ type: 'FeatureCollection', features: subFeatures }, {
-                        style: {
-                            color: '#94a3b8',
-                            weight: 0.9,
-                            fillColor: 'transparent',
-                            fillOpacity: 0
-                        },
-                        interactive: false
-                    }).addTo(map);
-                }
-            })
-            .catch(() => {});
-
-        // Contour vectoriel des régions de France (haute précision IGN / OpenStreetMap)
-        fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions.geojson')
-            .then(res => res.ok ? res.json() : null)
-            .then(data => {
-                if (data) {
-                    L.geoJSON(data, {
-                        style: {
-                            color: '#475569',
-                            weight: 1.5,
-                            fillColor: '#ffffff',
-                            fillOpacity: 0.96
-                        },
-                        interactive: false
-                    }).addTo(map);
-                }
-            })
-            .catch(() => {});
-
-        let markersLayer = L.layerGroup().addTo(map);
-        let currentFilter = 'all';
-        let markerRefs = {};
-
-        function updateCounters(timeFilteredItems) {
-            document.getElementById('count-all').textContent = timeFilteredItems.length;
-            document.getElementById('count-dispo').textContent = timeFilteredItems.filter(d => d.status === 'dispo').length;
-            document.getElementById('count-dernieres').textContent = timeFilteredItems.filter(d => d.status === 'dernieres').length;
-            document.getElementById('count-complet').textContent = timeFilteredItems.filter(d => d.status === 'complet').length;
-        }
-
-        function getStatusMeta(status) {
-            if (status === 'complet') {
-                return {
-                    badgeClass: 'status-complet',
-                    arrowClass: 'arrow-complet',
-                    icon: 'fa-ban',
-                    label: 'Complet',
-                    pillBg: 'bg-red-500/20 text-red-300 border-red-500/40'
-                };
-            }
-            if (status === 'dernieres') {
-                return {
-                    badgeClass: 'status-dernieres',
-                    arrowClass: 'arrow-dernieres',
-                    icon: 'fa-fire',
-                    label: 'Dernières places',
-                    pillBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                };
-            }
-            return {
-                badgeClass: 'status-dispo',
-                arrowClass: 'arrow-dispo',
-                icon: 'fa-calendar-day',
-                label: 'Places dispo',
-                pillBg: 'bg-blue-500/20 text-blue-300 border-blue-500/40'
-            };
-        }
-
-        function renderMapAndList() {
-            markersLayer.clearLayers();
-            markerRefs = {};
-            const listContainer = document.getElementById('datesList');
-            listContainer.innerHTML = '';
-
-            const artist = artistsData[currentArtistKey];
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            const timeFiltered = tourDates.filter(item =>
-                item.monthIdx >= timeStartIdx && item.monthIdx <= timeEndIdx
-            );
-            updateCounters(timeFiltered);
-
-            const filtered = timeFiltered.filter(item => {
-                const matchStatus = currentFilter === 'all' || item.status === currentFilter;
-                const matchQuery = !query || 
-                    item.city.toLowerCase().includes(query) || 
-                    item.fullDate.toLowerCase().includes(query) ||
-                    item.venue.toLowerCase().includes(query);
-                return matchStatus && matchQuery;
-            });
-
-            if (filtered.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="text-center py-10 text-slate-400 text-xs">
-                        <i class="fa-regular fa-face-meh text-2xl mb-2 block text-slate-500"></i>
-                        Aucune date ne correspond à votre filtre.
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach((item, index) => {
-                const meta = getStatusMeta(item.status);
-
-                // Création de l'icône personnalisée contenant la date directement sur la carte
-                const customIcon = L.divIcon({
-                    className: 'date-badge-marker',
-                    html: `
-                        <div style="transform: translate(-50%, -100%); display: inline-block;">
-                            <div class="pin-card ${meta.badgeClass}">
-                                <i class="fa-solid ${meta.icon}"></i>
-                                <span>${item.dateLabel}</span>
-                            </div>
-                            <div class="pin-arrow ${meta.arrowClass}"></div>
-                        </div>
-                    `,
-                    iconSize: [0, 0],
-                    iconAnchor: [0, 0]
-                });
-
-                const popupHTML = `
-                    <div class="min-w-[200px] text-slate-800">
-                        <div class="flex items-center justify-between gap-2 mb-1">
-                            <span class="font-extrabold text-sm text-slate-900">${item.city}</span>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                item.status === 'complet' ? 'bg-red-100 text-red-700' :
-                                item.status === 'dernieres' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-700'
-                            }">${meta.label}</span>
-                        </div>
-                        <p class="text-xs font-semibold text-slate-700 mb-0.5">
-                            <i class="fa-regular fa-calendar mr-1 text-slate-500"></i> ${item.fullDate}
-                        </p>
-                        <p class="text-xs text-slate-500 mb-2.5">
-                            <i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> ${item.venue}
-                        </p>
-                        <a href="${artist.sourceUrl}" target="_blank" rel="noopener noreferrer" 
-                           class="block text-center w-full py-1.5 px-3 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 transition">
-                            ${artist.ctaLabel} <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
-                        </a>
-                    </div>
-                `;
-
-                const marker = L.marker([item.lat, item.lng], { icon: customIcon })
-                    .bindPopup(popupHTML, { offset: [0, -28] });
-
-                markersLayer.addLayer(marker);
-                markerRefs[index] = marker;
-
-                // Ajout dans la liste latérale
-                const card = document.createElement('div');
-                card.className = "bg-slate-800/70 hover:bg-slate-800 border border-slate-700/80 rounded-xl p-3 cursor-pointer transition flex items-center justify-between gap-2 group";
-                card.innerHTML = `
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-sm text-white truncate group-hover:text-amber-300 transition">${item.city}</span>
-                        </div>
-                        <p class="text-xs text-slate-300 mt-0.5 font-medium">${item.fullDate}</p>
-                        <p class="text-[11px] text-slate-400 truncate">${item.venue}</p>
-                    </div>
-                    <div class="flex flex-col items-end shrink-0 gap-1">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-md border ${meta.pillBg}">
-                            ${item.dateLabel}
-                        </span>
-                        <span class="text-[10px] text-slate-400">${meta.label}</span>
-                    </div>
-                `;
-
-                card.addEventListener('click', () => {
-                    map.flyTo([item.lat, item.lng], 11, { duration: 0.9 });
-                    setTimeout(() => {
-                        marker.openPopup();
-                    }, 900);
-                });
-
-                listContainer.appendChild(card);
-            });
-        }
-
-        function filterDates(status) {
-            currentFilter = status;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-white');
-            });
-            document.getElementById('btn-' + status).classList.add('ring-2', 'ring-white');
-            renderMapAndList();
-        }
-
-        function handleSearch() {
-            renderMapAndList();
-        }
-
-        function handleTimeSlider(changedThumb) {
-            const startInput = document.getElementById('rangeStart');
-            const endInput = document.getElementById('rangeEnd');
-            let s = parseInt(startInput.value, 10);
-            let e = parseInt(endInput.value, 10);
-
-            if (changedThumb === 'start' && s > e) {
-                s = e;
-                startInput.value = s;
-            } else if (changedThumb === 'end' && e < s) {
-                e = s;
-                endInput.value = e;
-            }
-
-            timeStartIdx = s;
-            timeEndIdx = e;
-
-            // Mise à jour visuelle de la barre dorée entre les deux curseurs
-            const maxSteps = monthLabels.length - 1;
-            const leftPct = (s / maxSteps) * 100;
-            const widthPct = ((e - s) / maxSteps) * 100;
-            const fill = document.getElementById('rangeFill');
-            fill.style.left = leftPct + '%';
-            fill.style.width = widthPct + '%';
-
-            // Mise à jour du libellé de période
-            const labelEl = document.getElementById('timeRangeLabel');
-            labelEl.textContent = s === e ? monthLabels[s] : `${monthLabels[s]} – ${monthLabels[e]}`;
-
-            // Afficher/masquer le bouton "Tout"
-            const resetBtn = document.getElementById('resetTimeBtn');
-            if (s === 0 && e === maxSteps) {
-                resetBtn.classList.add('hidden');
-            } else {
-                resetBtn.classList.remove('hidden');
-            }
-
-            renderMapAndList();
-        }
-
-        function resetTimeRange() {
-            document.getElementById('rangeStart').value = 0;
-            document.getElementById('rangeEnd').value = monthLabels.length - 1;
-            handleTimeSlider('start');
-        }
-
-        function switchArtist(artistKey) {
-            if (!artistsData[artistKey]) return;
-            currentArtistKey = artistKey;
-            const artist = artistsData[artistKey];
-
-            tourDates = artist.dates;
-            monthLabels = artist.monthLabels;
-
-            // Mise à jour des textes et liens d'en-tête et pied de page
-            document.getElementById('artistSubtitle').textContent = artist.subtitle;
-            document.getElementById('sourceText').textContent = artist.sourceLabel;
-            document.getElementById('sourceLink').href = artist.sourceUrl;
-
-            // Adaptation du curseur temporel à la plage de l'artiste sélectionné
-            const maxSteps = monthLabels.length - 1;
-            const startInput = document.getElementById('rangeStart');
-            const endInput = document.getElementById('rangeEnd');
-            startInput.max = maxSteps;
-            endInput.max = maxSteps;
-            startInput.value = 0;
-            endInput.value = maxSteps;
-
-            const ticksContainer = document.getElementById('sliderTicks');
-            ticksContainer.innerHTML = artist.tickLabels.map(t => `<span>${t}</span>`).join('');
-
-            // Réinitialiser les filtres et recentrer la carte
-            currentFilter = 'all';
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('ring-2', 'ring-white'));
-            document.getElementById('btn-all').classList.add('ring-2', 'ring-white');
-            document.getElementById('searchInput').value = '';
-
-            handleTimeSlider('start');
-            resetViewFrance();
-        }
-
-        function resetViewFrance() {
-            map.flyTo([47.2, 2.8], 6, { duration: 0.8 });
-        }
-
-        function zoomBenelux() {
-            map.flyTo([50.25, 5.1], 8, { duration: 0.8 });
-        }
-
-        function zoomSuisse() {
-            map.flyTo([46.8, 7.6], 8, { duration: 0.8 });
-        }
-
-        function zoomParisIDF() {
-            map.flyTo([48.85, 2.45], 10, { duration: 0.8 });
-        }
-
-        // Initialisation au chargement
-        renderMapAndList();
-    </script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>

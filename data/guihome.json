@@ -1,1 +1,30 @@
-
+{
+  "name": "GuiHome vous détend",
+  "subtitle": "Tournée « GuiHome vous détend LeGrand » en France et en Belgique (2026 – 2027)",
+  "sourceLabel": "Source : guihome.be",
+  "sourceUrl": "https://guihome.be/",
+  "ctaLabel": "Réserver sur guihome.be",
+  "monthLabels": [
+    "Nov. 2026",
+    "Déc. 2026",
+    "Janv. 2027"
+  ],
+  "tickLabels": ["Nov. 2026", "Déc. 2026", "Janv. 2027"],
+  "dates": [
+    { "city": "Reims", "monthIdx": 0, "dateLabel": "25/11/26", "fullDate": "Mercredi 25 nov. 2026", "venue": "Le K (Tinqueux)", "status": "dispo", "lat": 49.2583, "lng": 4.0317 },
+    { "city": "Laon", "monthIdx": 0, "dateLabel": "26/11/26", "fullDate": "Jeudi 26 nov. 2026", "venue": "Maison des Arts et des Loisirs", "status": "dispo", "lat": 49.5641, "lng": 3.6244 },
+    { "city": "Colmar", "monthIdx": 0, "dateLabel": "28/11/26", "fullDate": "Samedi 28 nov. 2026", "venue": "Halle aux Vins - Parc Expo Colmar", "status": "dispo", "lat": 48.0972, "lng": 7.3625 },
+    { "city": "Toulouse", "monthIdx": 1, "dateLabel": "01/12/26", "fullDate": "Mardi 1 déc. 2026", "venue": "Casino Barrière Toulouse", "status": "dispo", "lat": 43.5681, "lng": 1.4286 },
+    { "city": "Bergerac", "monthIdx": 1, "dateLabel": "02/12/26", "fullDate": "Mercredi 2 déc. 2026", "venue": "Centre culturel Michel Manet", "status": "dispo", "lat": 44.8539, "lng": 0.4833 },
+    { "city": "Bordeaux (Déc.)", "monthIdx": 1, "dateLabel": "03/12/26", "fullDate": "Jeudi 3 déc. 2026", "venue": "Théâtre Fémina", "status": "dispo", "lat": 44.8414, "lng": -0.5761 },
+    { "city": "Les Sables-d'Olonne", "monthIdx": 1, "dateLabel": "04/12/26", "fullDate": "Vendredi 4 déc. 2026", "venue": "Centre des Congrès Les Atlantes", "status": "dispo", "lat": 46.4947, "lng": -1.7853 },
+    { "city": "Lille", "monthIdx": 1, "dateLabel": "09 & 10/12/26", "fullDate": "Mercredi 9 & Jeudi 10 déc. 2026", "venue": "Théâtre Sébastopol", "status": "dispo", "lat": 50.6301, "lng": 3.0592 },
+    { "city": "Metz", "monthIdx": 1, "dateLabel": "12/12/26", "fullDate": "Samedi 12 déc. 2026", "venue": "Metz Congrès Robert Schuman", "status": "dispo", "lat": 49.1086, "lng": 6.1836 },
+    { "city": "Mons 🇧🇪", "monthIdx": 1, "dateLabel": "15 à 17/12/26", "fullDate": "15, 16 & 17 déc. 2026 (3 soirs)", "venue": "Théâtre Royal de Mons", "status": "dispo", "lat": 50.4542, "lng": 3.9522 },
+    { "city": "La Louvière 🇧🇪", "monthIdx": 1, "dateLabel": "18/12/26", "fullDate": "Vendredi 18 déc. 2026", "venue": "Central", "status": "dispo", "lat": 50.4789, "lng": 4.1878 },
+    { "city": "Namur 🇧🇪", "monthIdx": 1, "dateLabel": "21 à 23/12/26", "fullDate": "21, 22 & 23 déc. 2026 (3 soirs)", "venue": "Théâtre de Namur", "status": "dispo", "lat": 50.4649, "lng": 4.8650 },
+    { "city": "Liège 🇧🇪", "monthIdx": 2, "dateLabel": "05/01/27", "fullDate": "Mardi 5 janv. 2027 (report du 15/10)", "venue": "Le Forum de Liège", "status": "dispo", "lat": 50.6412, "lng": 5.5718 },
+    { "city": "Bordeaux (Janv.)", "monthIdx": 2, "dateLabel": "08 & 09/01/27", "fullDate": "Vendredi 8 & Samedi 9 janv. 2027", "venue": "Théâtre Fémina", "status": "dispo", "lat": 44.8414, "lng": -0.5761 },
+    { "city": "Paris (L'Olympia)", "monthIdx": 2, "dateLabel": "18 à 20/01/27", "fullDate": "18, 19 & 20 janv. 2027 (3 soirs - Final)", "venue": "L'Olympia", "status": "dispo", "lat": 48.8702, "lng": 2.3284 }
+  ]
+}
