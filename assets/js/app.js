@@ -27,13 +27,73 @@
                 return [fileName.replace(/\.json$/i, ''), artist];
             }));
             const artistsData = Object.fromEntries(artists);
-            const artistSelect = document.getElementById('artistSelect');
-            artistSelect.textContent = '';
+            const artistPicker = document.getElementById('artistPicker');
+            const artistDropdownToggle = document.getElementById('artistDropdownToggle');
+            const artistDropdownMenu = document.getElementById('artistDropdownMenu');
             artists.forEach(([artistKey, artist]) => {
-                const option = document.createElement('option');
-                option.value = artistKey;
-                option.textContent = artist.name;
-                artistSelect.appendChild(option);
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.setAttribute('role', 'option');
+                option.setAttribute('aria-selected', 'false');
+                option.dataset.artistKey = artistKey;
+                option.className = 'w-full flex items-center gap-3 px-3 py-2 text-left text-white hover:bg-slate-800 focus:bg-slate-800 focus:outline-none transition';
+
+                const image = document.createElement('span');
+                image.className = 'h-14 w-10 shrink-0 overflow-hidden rounded-md bg-slate-800 flex items-center justify-center';
+                renderArtistImage(image, artist);
+
+                const name = document.createElement('span');
+                name.className = 'font-bold text-sm truncate';
+                name.textContent = artist.name;
+
+                option.append(image, name);
+                option.addEventListener('click', () => {
+                    setArtistDropdownOpen(false);
+                    switchArtist(artistKey);
+                    artistDropdownToggle.focus();
+                });
+                artistDropdownMenu.appendChild(option);
+            });
+
+            artistDropdownToggle.addEventListener('click', () => {
+                const isOpen = artistDropdownToggle.getAttribute('aria-expanded') === 'true';
+                setArtistDropdownOpen(!isOpen);
+                if (!isOpen) {
+                    const firstOption = artistDropdownMenu.querySelector('[role="option"]');
+                    if (firstOption) firstOption.focus();
+                }
+            });
+            artistDropdownToggle.addEventListener('keydown', event => {
+                if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    setArtistDropdownOpen(true);
+                    const options = artistDropdownMenu.querySelectorAll('[role="option"]');
+                    if (options.length) options[event.key === 'ArrowDown' ? 0 : options.length - 1].focus();
+                }
+            });
+            artistDropdownMenu.addEventListener('keydown', event => {
+                const options = Array.from(artistDropdownMenu.querySelectorAll('[role="option"]'));
+                const currentIndex = options.indexOf(document.activeElement);
+                let nextIndex = currentIndex;
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    setArtistDropdownOpen(false);
+                    artistDropdownToggle.focus();
+                    return;
+                }
+                if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % options.length;
+                else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + options.length) % options.length;
+                else if (event.key === 'Home') nextIndex = 0;
+                else if (event.key === 'End') nextIndex = options.length - 1;
+                else return;
+                event.preventDefault();
+                options[nextIndex].focus();
+            });
+            document.addEventListener('click', event => {
+                if (!artistPicker.contains(event.target)) setArtistDropdownOpen(false);
+            });
+            artistPicker.addEventListener('focusout', event => {
+                if (!artistPicker.contains(event.relatedTarget)) setArtistDropdownOpen(false);
             });
 
         let currentArtistKey = artists[0][0];
@@ -137,6 +197,32 @@
         let markersLayer = L.layerGroup().addTo(map);
         let currentFilter = 'all';
         let markerRefs = {};
+
+        function setArtistDropdownOpen(isOpen) {
+            artistDropdownMenu.classList.toggle('hidden', !isOpen);
+            artistDropdownToggle.setAttribute('aria-expanded', String(isOpen));
+        }
+
+        function renderArtistImage(container, artist) {
+            if (typeof artist.imageUrl === 'string' && artist.imageUrl.trim()) {
+                const image = document.createElement('img');
+                image.src = artist.imageUrl;
+                image.alt = '';
+                image.className = 'h-full w-full object-cover';
+                image.loading = 'lazy';
+                image.addEventListener('error', () => renderDefaultArtistIcon(container), { once: true });
+                container.replaceChildren(image);
+                return;
+            }
+            renderDefaultArtistIcon(container);
+        }
+
+        function renderDefaultArtistIcon(container) {
+            const icon = document.createElement('i');
+            icon.className = 'fa-solid fa-masks-theater text-amber-400 text-lg';
+            icon.setAttribute('aria-hidden', 'true');
+            container.replaceChildren(icon);
+        }
 
         function updateCounters(timeFilteredItems) {
             document.getElementById('count-all').textContent = timeFilteredItems.length;
@@ -349,6 +435,13 @@
 
             tourDates = artist.dates;
             monthLabels = artist.monthLabels;
+            document.getElementById('selectedArtistName').textContent = artist.name;
+            renderArtistImage(document.getElementById('selectedArtistImage'), artist);
+            artistDropdownMenu.querySelectorAll('[role="option"]').forEach(option => {
+                const isSelected = option.dataset.artistKey === artistKey;
+                option.setAttribute('aria-selected', String(isSelected));
+                option.classList.toggle('bg-slate-800', isSelected);
+            });
 
             // Mise à jour des textes et liens d'en-tête et pied de page
             document.getElementById('artistSubtitle').textContent = artist.subtitle;
@@ -393,7 +486,6 @@
             map.flyTo([48.85, 2.45], 10, { duration: 0.8 });
         }
 
-        document.getElementById('artistSelect').addEventListener('change', event => switchArtist(event.target.value));
         document.querySelectorAll('[data-filter]').forEach(button => {
             button.addEventListener('click', () => filterDates(button.dataset.filter));
         });

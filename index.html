@@ -27,13 +27,17 @@
             </div>
             <div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <label for="artistSelect" class="sr-only">Choisir un artiste</label>
-                    <div class="relative">
-                        <select id="artistSelect"
-                            class="appearance-none bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-base sm:text-lg tracking-tight pl-3 pr-8 py-1 rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer transition shadow-sm">
-                            <option value="" selected disabled>Chargement...</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down text-amber-400 text-xs absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <span id="artistSelectLabel" class="sr-only">Choisir un artiste</span>
+                    <div id="artistPicker" class="relative">
+                        <button id="artistDropdownToggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="artistDropdownMenu" aria-labelledby="artistSelectLabel selectedArtistName"
+                            class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-base sm:text-lg tracking-tight pl-2 pr-3 py-1 rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400 cursor-pointer transition shadow-sm flex items-center gap-2">
+                            <span id="selectedArtistImage" class="h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-slate-800 flex items-center justify-center">
+                                <i class="fa-solid fa-masks-theater text-amber-400"></i>
+                            </span>
+                            <span id="selectedArtistName">Chargement...</span>
+                            <i class="fa-solid fa-chevron-down text-amber-400 text-xs ml-1"></i>
+                        </button>
+                        <div id="artistDropdownMenu" role="listbox" aria-labelledby="artistSelectLabel" class="hidden absolute left-0 top-full z-50 mt-2 min-w-full w-max max-w-xs overflow-hidden rounded-xl border border-slate-700 bg-slate-950 shadow-xl"></div>
                     </div>
                     <span class="text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">France, Benelux & Suisse</span>
                 </div>
